@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class BlockchainWebApplication {
@@ -16,7 +17,7 @@ public class BlockchainWebApplication {
     }
 
     @Bean
-    public CommandLineRunner init(UserService userService, MinerRepository minerRepo) {
+    public CommandLineRunner init(UserService userService, MinerRepository minerRepo, PasswordEncoder passwordEncoder) {
         return args -> {
             if(userService.findByUsername("user1").isEmpty()) {
                 // Crear 6 usuarios con rol USER; contraseña "password"
@@ -34,6 +35,21 @@ public class BlockchainWebApplication {
                     userService.save(u);
                 }
             }
+            // Crear usuario admin si no existe
+            String adminName = "admin";
+            if (userService.findByUsername(adminName).isEmpty()) {
+                UserDetail admin = UserDetail.builder()
+                        .username(adminName)
+                        .password("passwordAdmin")
+                        .rol("ROLE_ADMIN")
+                        .nomcompleto("Administrador")
+                        .dni("DNIA")
+                        .saldo(0.0)
+                        .firmadigital("")
+                        .email("admin@example.com")
+                        .build();
+                userService.save(admin);
+            }
             if(minerRepo.count()==0){
                 for(int i=1;i<=3;i++){
                     Miner m = Miner.builder()
@@ -44,8 +60,6 @@ public class BlockchainWebApplication {
                     minerRepo.save(m);
                 }
             }
-            // Opcional: crear bloque génesis en BD si no existe
-            // ...
         };
     }
 }

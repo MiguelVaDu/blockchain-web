@@ -98,7 +98,7 @@ public class BlockchainService {
                 // actualizar estado
                 t.setEstado("PROCESADA");
                 txRepo.save(t);
-                // ajustar saldos
+                // ajustar saldos usando updateSaldoOnly en lugar de save()
                 Optional<UserDetail> optRem = userService.findById(t.getId1());
                 Optional<UserDetail> optRec = userService.findById(t.getId2());
                 if (optRem.isEmpty() || optRec.isEmpty()) {
@@ -106,10 +106,10 @@ public class BlockchainService {
                 }
                 UserDetail rem = optRem.get();
                 UserDetail rec = optRec.get();
-                rem.setSaldo(rem.getSaldo() - t.getCantidad());
-                rec.setSaldo(rec.getSaldo() + t.getCantidad());
-                userService.save(rem);
-                userService.save(rec);
+                double nuevoSaldoRem = rem.getSaldo() - t.getCantidad();
+                double nuevoSaldoRec = rec.getSaldo() + t.getCantidad();
+                userService.updateSaldoOnly(rem.getId(), nuevoSaldoRem);
+                userService.updateSaldoOnly(rec.getId(), nuevoSaldoRec);
                 // enviar correo al remitente
                 emailService.enviarCorreoConfirmacion(rem.getEmail(), t);
             }
