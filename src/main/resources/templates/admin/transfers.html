@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transferencias Realizadas</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+    <h2>Historial de Transferencias</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Remitente ID</th>
+            <th>Receptor ID</th>
+            <th>Cantidad</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tx : ${transfers}">
+            <td th:text="${tx.id}"></td>
+            <td th:text="${tx.fecha}"></td>
+            <td th:text="${tx.hora}"></td>
+            <td th:text="${tx.id1}"></td>
+            <td th:text="${tx.id2}"></td>
+            <td th:text="${tx.cantidad}"></td>
+            <td th:text="${tx.estado}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

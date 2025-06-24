@@ -2,7 +2,9 @@ package com.tads.blockchainweb.block;
 
 import com.tads.blockchainweb.block.BlockModel;
 import com.tads.blockchainweb.block.Contants;
+import lombok.Getter;
 
+@Getter
 public class MinerAdapter {
     private double reward = 0.0;
 
@@ -18,5 +20,4 @@ public class MinerAdapter {
         String leadingZeros = new String(new char[Contants.DIFFICULTY]).replace('\0', '0');
         return !block.getHash().substring(0, Contants.DIFFICULTY).equals(leadingZeros);
     }
-    public double getReward() { return reward; }
 }

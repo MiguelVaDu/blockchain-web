@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Ganancias por Minero</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+    <h2>Reporte de Ganancias por Minero</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Minero</th>
+            <th>DNI</th>
+            <th>Ganancia Total (S/.)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Se recibe un Map<Miner, Double> en el modelo como 'reporte' -->
+        <tr th:each="entry : ${reporte.entrySet()}">
+            <td th:text="${entry.key.nombre}"></td>
+            <td th:text="${entry.key.dni}"></td>
+            <td th:text="${entry.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

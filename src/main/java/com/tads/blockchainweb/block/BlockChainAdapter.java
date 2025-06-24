@@ -1,12 +1,14 @@
 package com.tads.blockchainweb.block;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockChain {
+@Getter
+public class BlockChainAdapter {
     private List<BlockModel> chain = new ArrayList<>();
 
-    public List<BlockModel> getChain() { return chain; }
     public void addBlock(BlockModel block) { chain.add(block); }
     public int size() { return chain.size(); }
     public String getLatestHash() {

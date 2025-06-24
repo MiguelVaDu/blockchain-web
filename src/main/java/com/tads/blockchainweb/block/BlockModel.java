@@ -1,13 +1,20 @@
 package com.tads.blockchainweb.block;
 
+import lombok.Getter;
+
 import java.util.Date;
 
 public class BlockModel {
     private int id;
+    @Getter
     private int nonce;
+    @Getter
     private long timeStamp;
+    @Getter
     private String hash;
+    @Getter
     private String previousHash;
+    @Getter
     private String transactionData; // cadena que reúne las 3 transacciones
 
     public BlockModel(int id, String transactionData, String previousHash) {
@@ -27,13 +34,11 @@ public class BlockModel {
     public void incrementNonce() {
         this.nonce++;
     }
-    public String getHash() { return hash; }
-    public int getNonce() { return nonce; }
-    public long getTimeStamp() { return timeStamp; }
-    public String getPreviousHash() { return previousHash; }
-    public String getTransactionData() { return transactionData; }
+
     @Override
     public String toString() {
         return id + "-" + transactionData + "-" + hash + "-" + previousHash;
     }
+
+    public int getId() { return this.id; }
 }
