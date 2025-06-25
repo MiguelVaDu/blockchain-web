@@ -10,29 +10,46 @@ import com.tads.blockchainweb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ReportService {
-    @Autowired
-    private TransactionRepository txRepo;
-    @Autowired private GananciaRepository ganRepo;
-    @Autowired private MinerRepository minerRepo;
-    @Autowired private UserRepository userRepo;
 
-    public List<Transaction> todasTransacciones() {
-        return txRepo.findAll();
-    }
-    public Map<Miner, Double> reporteGananciasPorMiner() {
-        Map<Miner, Double> res = new HashMap<>();
-        for (Miner m: minerRepo.findAll()) {
-            double total = ganRepo.findByIdmin(m.getId())
-                    .stream().mapToDouble(Ganancia::getGanancia).sum();
-            res.put(m, total);
+    @Autowired private GananciaRepository gananciaRepo;
+    @Autowired private MinerRepository minerRepo;
+
+    public List<MineroReporte> reportePorMiner() {
+        List<MineroReporte> lista = new ArrayList<>();
+        for (Miner m : minerRepo.findAll()) {
+            List<Ganancia> gs = gananciaRepo.findByIdmin(m.getId());
+            double total = gs.stream().mapToDouble(Ganancia::getGanancia).sum();
+            int bloques = gs.size();
+            lista.add(new MineroReporte(m.getNombre(), m.getDni(), bloques, total));
         }
-        return res;
+        return lista;
     }
+
+    public static class MineroReporte {
+        private String nombre;
+        private String dni;
+        private int bloques;
+        private double ganancia;
+
+        public MineroReporte(String nombre, String dni, int bloques, double ganancia) {
+            this.nombre = nombre;
+            this.dni = dni;
+            this.bloques = bloques;
+            this.ganancia = ganancia;
+        }
+        // getters
+        public String getNombre() { return nombre; }
+        public String getDni() { return dni; }
+        public int getBloques() { return bloques; }
+        public double getGanancia() { return ganancia; }
+    }
+
 }
 

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Página Principal</title>
-</head>
-<body>
-<h1>¡Bienvenido!</h1>
-<p>Has iniciado sesión correctamente.</p>
+<th:block th:replace="~{fragments/header :: header('home')}" th:with="pageTitle='Inicio'"></th:block>
+<div class="container mt-4">
 
-<!-- Formulario para cerrar sesión -->
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Cerrar Sesión</button>
-</form>
-</body>
-</html>
+    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${mensaje}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <h2>Bienvenido, <span th:text="${username}">Usuario</span></h2>
+    <p>Saldo actual: S/. <strong th:text="${saldo}">0.00</strong></p>
+    <a th:href="@{/transfer}" class="btn btn-primary me-2">Transferir dinero</a>
+    <a th:href="@{/myTransfers}" class="btn btn-secondary">Mis transferencias</a>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>

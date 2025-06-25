@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByEstadoOrderByFechaAscHoraAsc(String estado);
+    List<Transaction> findById1OrId2OrderByFechaAscHoraAsc(Long id1, Long id2);
 }
 

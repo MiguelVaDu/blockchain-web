@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Reporte de Ganancias por Minero</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-</head>
-<body>
-<div class="container">
-    <h2>Reporte de Ganancias por Minero</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Minero</th>
-            <th>DNI</th>
-            <th>Ganancia Total (S/.)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Se recibe un Map<Miner, Double> en el modelo como 'reporte' -->
-        <tr th:each="entry : ${reporte.entrySet()}">
-            <td th:text="${entry.key.nombre}"></td>
-            <td th:text="${entry.key.dni}"></td>
-            <td th:text="${entry.value}"></td>
-        </tr>
-        </tbody>
-    </table>
+<th:block th:replace="~{fragments/header :: header('minerReport')}" th:with="pageTitle='Reporte de Ganancias'"></th:block>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Ganancias por Minero</h5>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Minero</th><th>DNI</th><th>Bloques Minados</th><th>Ganancia Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="r : ${reportes}">
+                    <td th:text="${r.nombre}"></td>
+                    <td th:text="${r.dni}"></td>
+                    <td th:text="${r.bloques}"></td>
+                    <td th:text="${#numbers.formatDecimal(r.ganancia,1,2)}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-</body>
-</html>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>

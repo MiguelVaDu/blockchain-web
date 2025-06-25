@@ -13,16 +13,17 @@ import com.tads.blockchainweb.repository.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Autowired private UserRepository userRepo;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     public Optional<UserDetail> findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
     public Optional<UserDetail> findById(Long id) {
         return userRepo.findById(id);
+    }
+    public List<UserDetail> findAll() {
+        return userRepo.findAll();
     }
 
     public UserDetail createUser(UserDetail user) {
@@ -45,6 +46,12 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(pass));
         }
         return userRepo.save(user);
+    }
+    public void changePassword(Long userId, String newPassword) {
+        userRepo.findById(userId).ifPresent(u -> {
+            u.setPassword(passwordEncoder.encode(newPassword));
+            userRepo.save(u);
+        });
     }
 
     public List<UserDetail> findAllExcept(Long id) {

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{fragments/header :: header('transfers')}" th:with="pageTitle='Historial de Transferencias'"></th:block>
+<th:block th:replace="~{fragments/header :: header('myTransfers')}" th:with="pageTitle='Mis Transferencias'"></th:block>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Historial de Transferencias</h5>
+        <h5 class="card-title">Mis Transferencias</h5>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th><th>Fecha</th><th>Hora</th><th>Remitente</th><th>Receptor</th><th>Cantidad</th><th>Estado</th>
+                    <th>ID</th><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Contraparte</th><th>Cantidad</th><th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="tx : ${transfers}">
+                <tr th:each="tx : ${myTransfers}">
                     <td th:text="${tx.id}"></td>
                     <td th:text="${tx.fecha}"></td>
                     <td th:text="${tx.hora}"></td>
-                    <td th:text="${userMap[tx.id1]}"></td>
-                    <td th:text="${userMap[tx.id2]}"></td>
+                    <td th:text="${tx.id1 == userId} ? 'Enviado' : 'Recibido'"></td>
+                    <td th:text="${tx.id1 == userId ? userMap[tx.id2].username : userMap[tx.id1].username}"></td>
                     <td th:text="${#numbers.formatDecimal(tx.cantidad,1,2)}"></td>
                     <td>
               <span th:classappend="${tx.estado=='PENDIENTE'} ? 'badge bg-warning' : 'badge bg-success'"

@@ -1,33 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Transferencia de Dinero</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-</head>
-<body>
-<div class="container">
-    <h2>Realizar Transferencia</h2>
-    <p>Saldo actual: S/. <span th:text="${saldo}"></span></p>
-    <form th:action="@{/transfer}" th:object="${txForm}" method="post">
-        <div>
-            <label for="receptorId">Receptor:</label>
-            <select id="receptorId" th:field="*{receptorId}" required>
-                <option value="" disabled selected>Seleccione receptor</option>
-                <option th:each="u : ${usuarios}" th:value="${u.id}" th:text="${u.username} + ' - ' + ${u.nomcompleto}"></option>
-            </select>
-        </div>
-        <div>
-            <label for="cantidad">Cantidad (S/.):</label>
-            <input type="number" id="cantidad" th:field="*{cantidad}" step="0.01" min="0.01" required />
-        </div>
-        <div>
-            <button type="submit">Enviar</button>
-        </div>
-    </form>
-    <div th:if="${error}">
-        <p style="color:red;" th:text="${error}"></p>
+<th:block th:replace="~{fragments/header :: header('transfer')}" th:with="pageTitle='Transferir Dinero'"></th:block>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-3">Realizar Transferencia</h2>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <form th:action="@{/transfer}" th:object="${txForm}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <div class="mb-3">
+                <label for="receptorId" class="form-label">Receptor:</label>
+                <select id="receptorId" th:field="*{receptorId}" class="form-select" required>
+                    <option value="" disabled selected>Seleccione receptor</option>
+                    <option th:each="u : ${usuarios}" th:value="${u.id}" th:text="${u.username} + ' - ' + ${u.nomcompleto}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad (S/.):</label>
+                <input type="number" id="cantidad" th:field="*{cantidad}" class="form-control" step="0.01" min="0.01" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
     </div>
 </div>
-</body>
-</html>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
